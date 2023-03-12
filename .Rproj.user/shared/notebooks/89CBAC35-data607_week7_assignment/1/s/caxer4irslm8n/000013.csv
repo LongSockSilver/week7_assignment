@@ -1,0 +1,4 @@
+"0","df_xml <- xmlToDataFrame(""books.xml"")"
+"0",""
+"0","#Converting titles now that spaces can be present in column headers"
+"0","colnames(df_xml)[3:4] <- c(""Publication Year"", ""Price on Amazon (Hardcover, USD"")"

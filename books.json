@@ -1,0 +1,20 @@
+[
+ {
+   "Book": "Bad Blood: Secrets and Lies in a Silicon Valley Startup",
+   "Author": "John Carreyrou",
+   "Publication_Year": 2020,
+   "Price_on_Amazon": 14.69
+ },
+ {
+   "Book": "An Ugly Truth: Inside Facebook's Battle for Domination",
+   "Author": "Sheera Frenkel, Cecilia Kang",
+   "Publication_Year": 2021,
+   "Price_on_Amazon": 14.58
+ },
+ {
+   "Book": "The Cult of We: WeWork, Adam Neumann, and the Great Startup Delusion",
+   "Author": "Eliot Brown, Maureen Farrell",
+   "Publication_Year": 2022,
+   "Price_on_Amazon": 20.41
+ }
+]

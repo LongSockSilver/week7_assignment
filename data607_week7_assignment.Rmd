@@ -1,0 +1,60 @@
+---
+title: "data607_week7_assignment"
+output: html_document
+date: "2023-03-12"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Introduction
+
+Now that I've created my books table in html, JSON and XML formats, I'll get them each into a dataframe to compare both the processes and results.
+
+First, I need to pull in one library for each file format, as well as the tidyverse for dataframe manipulation as needed.
+
+```{r}
+library(tidyverse)
+library(rvest)
+library(XML)
+library(jsonlite)
+```
+
+### HTML
+
+I'll use the read_html function to pull in my file, and html_table to convert it into a dataframe. This function actually returns a list, which I need to index to retrieve the dataframe.
+
+```{r}
+df_html <- html_table(read_html('books.html'))[[1]]
+
+df_html
+```
+
+### XML
+
+The xmlToDataFrame function in the XML package can read in a table from XML cleanly. However, unlike with HTML, the column headers are in the *tags* rather than between them. That means I couldn't use tag-forbidden characters like spaces. Therefore, I changed the column names to match my original intention after the fact.
+
+```{r}
+df_xml <- xmlToDataFrame("books.xml")
+
+#Converting titles now that spaces can be present in column headers
+colnames(df_xml)[3:4] <- c("Publication Year", "Price on Amazon (Hardcover, USD")
+```
+
+### JSON
+
+The fromJSON function in the jsonlite package makes reading in JSON files quite seamless. However, spaces in column headers are a small issue (they are replaced with periods). As with XML, I just had to change 
+
+```{r}
+df_json <- fromJSON("books.json")
+
+#Converting titles now that spaces can be present in column headers
+colnames(df_json)[3:4] <- c("Publication Year", "Price on Amazon (Hardcover, USD)")
+```
+
+### Conclusion
+
+The tables all look quite similar. However, the JSON and HTML files had the requirement to reformat my headers, while the HTML did not. 
+
+Further, the XML file read in my two numerical columns (publication year and price) as characters, while my JSON import interpreted them as numbers. That's not a very difficult fix, but it's something to pay close attention to when reading in tables from different file formats.
