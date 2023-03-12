@@ -1,0 +1,6 @@
+"0","df_html <- getURL('https://raw.githubusercontent.com/LongSockSilver/week7_assignment/main/books.html?token=GHSAT0AAAAAAB6EJOBLC2QWKCURP6O75RR2ZAN6LDA') %>%"
+"0","  read_html() %>%"
+"0","  html_table() %>%"
+"0","  .[[1]]"
+"2","Error: '404: Not Found' does not exist in current working directory ('/Users/jacobsilver/Documents/CUNY/DATA607_data_acq_and_mgmt/week7_assignment').
+"

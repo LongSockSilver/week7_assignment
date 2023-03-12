@@ -12,9 +12,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Now that I've created my books table in html, JSON and XML formats, I'll get them each into a dataframe to compare both the processes and results.
 
-First, I need to pull in one library for each file format, as well as the tidyverse for dataframe manipulation as needed.
+First, I need to pull in one library for each file format, as well as the tidyverse for dataframe manipulation as needed. I will also bring in RCurl so I can pull my files seamlessly from GitHub.
 
 ```{r}
+library(RCurl)
 library(tidyverse)
 library(rvest)
 library(XML)
@@ -26,14 +27,57 @@ library(jsonlite)
 I'll use the read_html function to pull in my file, and html_table to convert it into a dataframe. This function actually returns a list, which I need to index to retrieve the dataframe.
 
 ```{r}
-df_html <- html_table(read_html('books.html'))[[1]]
-
-df_html
+df_html <- getURL('https://raw.githubusercontent.com/LongSockSilver/week7_assignment/main/books.html') %>%
+  read_html() %>%
+  html_table() %>%
+  .[[1]]
 ```
 
 ### XML
 
 The xmlToDataFrame function in the XML package can read in a table from XML cleanly. However, unlike with HTML, the column headers are in the *tags* rather than between them. That means I couldn't use tag-forbidden characters like spaces. Therefore, I changed the column names to match my original intention after the fact.
+
+```{r}
+df_xml <- getURL('https://raw.githubusercontent.com/LongSockSilver/week7_assignment/main/books.xml') %>%
+  xmlToDataFrame()
+
+#Converting titles now that spaces can be present in column headers
+colnames(df_xml)[3:4] <- c("Publication Year", "Price on Amazon (Hardcover, USD")
+
+df_xml
+```
+
+### JSON
+
+The fromJSON function in the jsonlite package makes reading in JSON files quite seamless. However, spaces in column headers are a small issue (they are replaced with periods). As with XML, I just had to change 
+
+```{r}
+df_json <- getURL('https://raw.githubusercontent.com/LongSockSilver/week7_assignment/main/books.json') %>%
+  fromJSON()
+
+#Converting titles now that spaces can be present in column headers
+colnames(df_json)[3:4] <- c("Publication Year", "Price on Amazon (Hardcover, USD)")
+```
+
+
+### Conclusion
+
+The tables all look quite similar. However, the JSON and HTML files had the requirement to reformat my headers, while the HTML did not. 
+
+Further, the XML file read in my two numerical columns (publication year and price) as characters, while my JSON import interpreted them as numbers. That's not a very difficult fix, but it's something to pay close attention to when reading in tables from different file formats.
+
+### Reading from files
+
+In case there is trouble accessing the files directly from GitHub with RCurl, please download the full repository and access the files from your machine using the following code.
+
+
+HTML:
+
+```{r}
+df_html <- html_table(read_html('books.html'))[[1]]
+```
+
+XML:
 
 ```{r}
 df_xml <- xmlToDataFrame("books.xml")
@@ -42,9 +86,7 @@ df_xml <- xmlToDataFrame("books.xml")
 colnames(df_xml)[3:4] <- c("Publication Year", "Price on Amazon (Hardcover, USD")
 ```
 
-### JSON
-
-The fromJSON function in the jsonlite package makes reading in JSON files quite seamless. However, spaces in column headers are a small issue (they are replaced with periods). As with XML, I just had to change 
+JSON:
 
 ```{r}
 df_json <- fromJSON("books.json")
@@ -53,8 +95,4 @@ df_json <- fromJSON("books.json")
 colnames(df_json)[3:4] <- c("Publication Year", "Price on Amazon (Hardcover, USD)")
 ```
 
-### Conclusion
 
-The tables all look quite similar. However, the JSON and HTML files had the requirement to reformat my headers, while the HTML did not. 
-
-Further, the XML file read in my two numerical columns (publication year and price) as characters, while my JSON import interpreted them as numbers. That's not a very difficult fix, but it's something to pay close attention to when reading in tables from different file formats.

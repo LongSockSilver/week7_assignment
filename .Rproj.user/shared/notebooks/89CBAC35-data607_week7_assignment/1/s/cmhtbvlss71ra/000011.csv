@@ -1,0 +1,5 @@
+"0","df_json <- getURL('https://raw.githubusercontent.com/LongSockSilver/week7_assignment/main/books.json?token=GHSAT0AAAAAAB6EJOBK2SKASFZICEX4DX62ZAN6P4A') %>%"
+"0","  fromJSON()"
+"0",""
+"0","#Converting titles now that spaces can be present in column headers"
+"0","colnames(df_json)[3:4] <- c(""Publication Year"", ""Price on Amazon (Hardcover, USD)"")"

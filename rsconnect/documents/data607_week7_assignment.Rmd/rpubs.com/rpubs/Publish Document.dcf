@@ -1,0 +1,11 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/1014399/44cc5113315a4bfd886bc6fee3e51cb8
+bundleId: https://api.rpubs.com/api/v1/document/1014399/44cc5113315a4bfd886bc6fee3e51cb8
+url: http://rpubs.com/datajacob/1014399
+when: 1678636478.24423
+lastSyncTime: 1678636478.24424
